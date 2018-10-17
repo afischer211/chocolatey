@@ -2,17 +2,17 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>joplin</id>
-        <version>1.0.96</version>
+        <version>1.0.111</version>
         <title>Joplin</title>
         <authors>Laurent Cozic</authors>
         <owners>foo.li systeme + software</owners>
         <licenseUrl>https://github.com/laurent22/joplin/blob/master/LICENSE</licenseUrl>
         <projectUrl>http://joplin.cozic.net</projectUrl>
-        <iconUrl>https://raw.githubusercontent.com/peterbeck/chocolatey/master/icons/joplin.png</iconUrl>
+        <iconUrl>https://raw.githubusercontent.com/afischer211/chocolatey/master/icons/joplin.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>a note taking and to-do application with synchronization capabilities for Windows, macOS, Linux, Android and iOS. </description>
         <summary>Joplin Notes and To-Do</summary>
-        <releaseNotes>https://github.com/laurent22/joplin/releases/tag/v1.0.96</releaseNotes>
+        <releaseNotes>https://github.com/laurent22/joplin/releases/tag/v1.0.111</releaseNotes>
         <copyright>http://joplin.cozic.net</copyright>
         <language />
         <tags>notes todo admin</tags>
