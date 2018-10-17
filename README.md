@@ -1,3 +1,3 @@
 # chocolatey
 
-This project is unmaintained and has moved to https://git.foo.li/peter/chocolatey.
+I have overtaken the maintenance from Peter, especially for the package joplin.
