@@ -1,14 +1,14 @@
 # Joplin Notes and To-Do
-# 2018 foo.li systeme + software
+# 2018 foo.li systeme + software, afischer211
 
 $packageName    = 'joplin'
 $packageSearch  = 'Joplin*'
 $installerType  = 'exe'
 $silentArgs     = '/ALLUSERS=1 /S'
-$version        = '1.0.111'
+$version        = '1.0.114'
 $url 			= 'https://github.com/laurent22/joplin/releases/download/v' + $version + '/Joplin-Setup-' + $version + '.exe'
 $url64          = $url
-$checksum       = '0666D0BCCB128ED937A8B39BE92F4F3F6D050E83'
+$checksum       = '5C37014097ECE8910C46E6A5D6C98659420EBD3D'
 $checksumType   = 'sha1'
 $checksum64   	= $checksum
 $checksumType64 = $checksumType
