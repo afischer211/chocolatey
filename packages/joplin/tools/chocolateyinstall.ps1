@@ -5,10 +5,10 @@ $packageName    = 'joplin'
 $packageSearch  = 'Joplin*'
 $installerType  = 'exe'
 $silentArgs     = '/ALLUSERS=1 /S'
-$version        = '1.0.200'
+$version        = '1.0.201'
 $url 			= 'https://github.com/laurent22/joplin/releases/download/v' + $version + '/Joplin-Setup-' + $version + '.exe'
 $url64          = $url
-$checksum       = 'CCA6CBE9F3B187E8265BCEE240075C5EE9665927'
+$checksum       = '2E78E3596D82DF90F5B554172495955F6D807AE2'
 $checksumType   = 'sha1'
 $checksum64   	= $checksum
 $checksumType64 = $checksumType
