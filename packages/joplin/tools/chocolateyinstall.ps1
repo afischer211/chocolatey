@@ -1,17 +1,18 @@
-# Joplin Notes and To-Do
+﻿# Joplin Notes and To-Do
 # 2018 foo.li systeme + software, afischer211
+$ErrorActionPreference = 'Stop';
+$toolsDir              = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
+$version               = '1.4.11'
+$packageSearch         = 'Joplin*'
 
-$packageName    = 'joplin'
-$packageSearch  = 'Joplin*'
-$installerType  = 'exe'
-$silentArgs     = '/ALLUSERS=1 /S'
-$version        = '1.3.18'
-$url 			= 'https://github.com/laurent22/joplin/releases/download/v' + $version + '/Joplin-Setup-' + $version + '.exe'
-$url64          = $url
-$checksum       = '1B3F6D765E9FDCBCC6DF526EED4168364025A448'
-$checksumType   = 'sha1'
-$checksum64   	= $checksum
-$checksumType64 = $checksumType
+$packageArgs = @{
+  packageName   = $env:ChocolateyPackageName
+  fileType      = 'EXE'
+  file          = Join-Path $toolsDir ''
+  softwareName  = $packageSearch
+  silentArgs    = '/ALLUSERS=1 /S'
+  validExitCodes= @(0)
+}
 
 try {   
     $app = Get-ItemProperty -Path @('HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*',
@@ -24,9 +25,7 @@ try {
         'No need to download and install again. Otherwise uninstall first.'
         )
     } else {
-        Install-ChocolateyPackage $packageName $installerType $silentArgs $url $url64 `
-                    -checksum $checksum -checksumType $checksumType `
-                    -checksum64 $checksum64 -checksumType64 $checksumType64
+        Install-ChocolateyInstallPackage @packageArgs
     }           
 } catch {
     throw $_.Exception
