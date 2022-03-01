@@ -2,23 +2,23 @@
 # 2018 foo.li systeme + software, afischer211
 $ErrorActionPreference = 'Stop';
 $toolsDir              = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$version               = '2.6.10'
+$version               = '2.7.13'
 $packageSearch         = 'Joplin*'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   fileType      = 'EXE'
-  file          = Join-Path $toolsDir 'Joplin-Setup-2.6.10.exe'
+  file          = Join-Path $toolsDir 'Joplin-Setup-2.7.13.exe'
   softwareName  = $packageSearch
   silentArgs    = '/ALLUSERS=1 /S'
   validExitCodes= @(0)
 }
 
-try {   
+try {
     $app = Get-ItemProperty -Path @('HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*',
                                     'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*') `
             -ErrorAction:SilentlyContinue | Where-Object { $_.DisplayName -like $packageSearch }
-	
+
     if ($app -and ([version]$app.DisplayVersion -ge [version]$version)) {
         Write-Output $(
         'Joplin ' + $version + ' or greater is already installed. ' +
@@ -26,7 +26,7 @@ try {
         )
     } else {
         Install-ChocolateyInstallPackage @packageArgs
-    }           
+    }
 } catch {
     throw $_.Exception
 }
