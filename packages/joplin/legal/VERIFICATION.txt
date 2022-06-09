@@ -7,7 +7,7 @@ Package can be verified like this:
 
 1. Go to
 
-   x32: https://github.com/laurent22/joplin/releases/download/v2.7.15/Joplin-Setup-2.7.15.exe
+   x32: https://github.com/laurent22/joplin/releases/download/v2.8.8/Joplin-Setup-2.8.8.exe
 
    to download the zip.
 
@@ -15,4 +15,4 @@ Package can be verified like this:
    - Use powershell function 'Get-FileHash'
    - Use Chocolatey utility 'checksum.exe'
 
-   checksum32: 893DE0BEC77E8D277B069494DDF8D18DDDAB79582E5E9A08631D0E3034B1AA0D
+   checksum32: 84BF6E95D60C786C6A9273AFC9470DDD27FF026F53DDC6F0628F7CFD3A11B81C
