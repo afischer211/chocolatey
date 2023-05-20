@@ -19,13 +19,17 @@ function global:au_BeforeUpdate() {
 
 
 function global:au_GetLatest {
-	$download_page = Invoke-WebRequest -Uri https://github.com/laurent22/joplin/releases/ -UseBasicParsing
-	
-	$url        = $download_page.links | ? href -match '.exe$'| % href | select -First 1
-	$version    = ($url -split '/' | select -Last 1 -Skip 1).trim('v')
-	$modurl     = 'https://github.com' + $url 
-	
-	return @{ Version = $version; URL32 = $modurl; PackageName = 'joplin'}
+	# Get latest release information from GitHub
+	$gh_latest_page	= Invoke-WebRequest -Uri https://api.github.com/repos/laurent22/joplin/releases/latest -Headers $headers -ContentType "application/json" | ConvertFrom-Json
+
+	# Get version
+	$version	= $gh_latest_page.name.trim('v')
+
+	# Get download URL
+	$asset		= $gh_parsed.assets | Where-Object { $_.name -Match 'exe' -and  $_.name -Match 'Setup' }
+	$url		= $asset.browser_download_url
+
+	return @{ Version = $version; URL32 = $url; PackageName = 'joplin'}
 }
 
 Update-Package -ChecksumFor none
