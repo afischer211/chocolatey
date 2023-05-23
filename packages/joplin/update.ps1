@@ -26,7 +26,7 @@ function global:au_GetLatest {
 	$version	= $gh_latest_page.name.trim('v')
 
 	# Get download URL
-	$asset		= $gh_parsed.assets | Where-Object { $_.name -Match 'exe' -and  $_.name -Match 'Setup' }
+	$asset		= $gh_latest_page.assets | Where-Object { $_.name -Match 'exe' -and  $_.name -Match 'Setup' }
 	$url		= $asset.browser_download_url
 
 	return @{ Version = $version; URL32 = $url; PackageName = 'joplin'}
