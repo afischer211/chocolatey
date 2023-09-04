@@ -2,21 +2,21 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>joplin</id>
-        <version>2.12.15</version>
+        <version>2.11.11</version>
         <title>Joplin</title>
         <authors>Laurent Cozic</authors>
-        <owners>foo.li systeme + software,afischer212</owners>
+        <owners>foo.li systeme + software,afischer211</owners>
         <licenseUrl>https://github.com/laurent22/joplin/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://joplinapp.org/</projectUrl>
         <iconUrl>https://raw.githubusercontent.com/afischer211/chocolatey/master/icons/joplin.png</iconUrl>
-        <packageSourceUrl>https://github.com/afischer212/chocolatey/tree/master/packages/joplin</packageSourceUrl>
+        <packageSourceUrl>https://github.com/afischer211/chocolatey/tree/master/packages/joplin</packageSourceUrl>
         <docsUrl>https://joplinapp.org/</docsUrl>
         <projectSourceUrl>https://github.com/laurent22/joplin</projectSourceUrl>
         <mailingListUrl>https://discourse.joplinapp.org/</mailingListUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>a note taking and to-do application with synchronization capabilities for Windows, macOS, Linux, Android and iOS. </description>
         <summary>Joplin Notes and To-Do</summary>
-        <releaseNotes>https://github.com/laurent22/joplin/releases/tag/v2.12.15</releaseNotes>
+        <releaseNotes>https://github.com/laurent22/joplin/releases/tag/v2.11.11</releaseNotes>
         <copyright>https://joplinapp.org/</copyright>
         <language />
         <tags>notes todo admin</tags>
