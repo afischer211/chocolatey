@@ -2,13 +2,13 @@
 # 2018 foo.li systeme + software, afischer211
 $ErrorActionPreference = 'Stop';
 $toolsDir              = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$version               = '2.12.19'
+$version               = '2.13.12'
 $packageSearch         = 'Joplin*'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
   fileType      = 'EXE'
-  file          = Join-Path $toolsDir 'Joplin-Setup-2.12.19.exe'
+  file          = Join-Path $toolsDir 'Joplin-Setup-2.13.12.exe'
   softwareName  = $packageSearch
   silentArgs    = '/ALLUSERS=1 /S'
   validExitCodes= @(0)
