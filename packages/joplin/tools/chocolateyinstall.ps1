@@ -2,16 +2,27 @@
 # 2018 foo.li systeme + software, afischer211
 $ErrorActionPreference = 'Stop';
 $toolsDir              = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$version               = '2.13.12'
+$version               = '2.13.14'
 $packageSearch         = 'Joplin*'
+$file           = Join-Path $toolsDir 'Joplin-Setup-2.13.14.exe'
+$installerType = 'exe'
+$packageName   = 'joplin'
+$url 			 = 'https://github.com/laurent22/joplin/releases/download/v' + $version + '/Joplin-Setup-' + $version + '.exe'
+$checksum      = '1AB5C4B1635A1EDB528B51373349105AD8E992620002F952DF8090CAD2BC4D03'
+$checksumType  = 'sha256'
 
 $packageArgs = @{
-  packageName   = $env:ChocolateyPackageName
-  fileType      = 'EXE'
-  file          = Join-Path $toolsDir 'Joplin-Setup-2.13.12.exe'
-  softwareName  = $packageSearch
-  silentArgs    = '/ALLUSERS=1 /S'
-  validExitCodes= @(0)
+  packageName    = $packageName
+  fileType       = 'exe'
+  softwareName   = $packageSearch
+  silentArgs     = '/ALLUSERS=1 /S'
+  validExitCodes = @(0)
+  url           = $url
+  url64bit      = $url
+  checksum      = $checksum
+  checksumType  = $checksumType
+  checksum64    = $checksum
+  checksumType64= $checksumType  
 }
 
 try {   
@@ -25,7 +36,7 @@ try {
         'No need to download and install again. Otherwise uninstall first.'
         )
     } else {
-        Install-ChocolateyInstallPackage @packageArgs
+        Install-ChocolateyPackage @packageArgs
     }           
 } catch {
     throw $_.Exception
