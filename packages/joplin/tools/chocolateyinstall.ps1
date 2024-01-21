@@ -4,10 +4,11 @@ $ErrorActionPreference = 'Stop';
 $toolsDir              = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $version               = '2.13.15'
 $packageSearch         = 'Joplin*'
-$file           = Join-Path $toolsDir 'Joplin-Setup-' + $version + '.exe'
+$installerFileName     = 'Joplin-Setup-' + $version + '.exe'
+$file          = Join-Path $toolsDir $installerFileName
 $installerType = 'exe'
 $packageName   = 'joplin'
-$url 			 = 'https://github.com/laurent22/joplin/releases/download/v' + $version + '/Joplin-Setup-' + $version + '.exe'
+$url 		   = 'https://github.com/laurent22/joplin/releases/download/v' + $version + '/' + $installerFileName
 $checksum      = '8DB589A1D34F690A417E4ADB1AF51E36AFAE1B819217CBD3D14DC06B8304167F'
 $checksumType  = 'sha256'
 
