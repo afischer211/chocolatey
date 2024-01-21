@@ -3,8 +3,9 @@
 function global:au_SearchReplace {
     @{
         ".\tools\chocolateyInstall.ps1" = @{
-            "(?i)(^\s*File\s*=\s*)(.*)" = "`$1Join-Path `$toolsDir '$($Latest.FileName32)'"
-            "(?i)(^.*version\s*=\s*)('.*')" = "`$1'$($Latest.Version)'"
+#            "(?i)(^\s*file\s*=\s*)(.*)" = "`$1Join-Path `$toolsDir '$($Latest.FileName32)'"
+            "(?i)(^.*version\s*=\s*)('.*')"  = "`$1'$($Latest.Version)'"
+			"(?i)(^.*checksum\s*=\s*)('.*')" = "`$1'$($Latest.Checksum32)'"
         }
         ".\legal\VERIFICATION.txt" = @{
             "(?i)(\s+x32:).*"            = "`${1} $($Latest.URL32)"
