@@ -2,14 +2,14 @@
 # 2018 foo.li systeme + software, afischer211
 $ErrorActionPreference = 'Stop';
 $toolsDir              = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$version               = '3.0.12'
+$version               = '3.0.13'
 $packageSearch         = 'Joplin*'
 $installerFileName     = 'Joplin-Setup-' + $version + '.exe'
 $file          = Join-Path $toolsDir $installerFileName
 $installerType = 'exe'
 $packageName   = 'joplin'
 $url 		   = 'https://github.com/laurent22/joplin/releases/download/v' + $version + '/' + $installerFileName
-$checksum      = '5B80D791FB4ED3D87A660E7A969797B81BD2933F9D0F3C3805671A7EA946E76C'
+$checksum      = 'C4C8BDABDBF54BCA512E8525CD54BB3B0C4E9C16525060527871D5F042800E9A'
 $checksumType  = 'sha256'
 
 $packageArgs = @{
