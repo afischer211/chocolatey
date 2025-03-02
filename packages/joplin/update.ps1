@@ -15,7 +15,7 @@ function global:au_SearchReplace {
 }
 
 function global:au_BeforeUpdate() {
-	Get-RemoteFiles -Purge -NoSuffix 
+	Get-RemoteFiles -Purge -NoSuffix
 }
 
 
@@ -27,7 +27,7 @@ function global:au_GetLatest {
 	$version	= $gh_latest_page.name.trim('v')
 
 	# Get download URL
-	$asset		= $gh_latest_page.assets | Where-Object { $_.name -Match 'exe' -and  $_.name -Match 'Setup' }
+	$asset		= $gh_latest_page.assets | Where-Object { $_.name -like 'Joplin-Setup-*.exe' }
 	$url		= $asset.browser_download_url
 
 	return @{ Version = $version; URL32 = $url; PackageName = 'joplin'}
