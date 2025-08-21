@@ -1,0 +1,135 @@
+name: Publish to Chocolatey.org
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'packages/**'
+  workflow_dispatch:
+    # Allow manual triggering of the workflow
+
+jobs:
+  publish-packages:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Fetch current and previous commit to detect changes
+
+      - name: Install Chocolatey CLI
+        shell: powershell
+        run: |
+          Write-Host "Installing Chocolatey CLI..."
+          Set-ExecutionPolicy Bypass -Scope Process -Force
+          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+          iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+          
+          # Verify installation
+          choco --version
+          Write-Host "Chocolatey CLI installed successfully"
+
+      - name: Detect changed packages
+        id: detect-changes
+        shell: powershell
+        run: |
+          Write-Host "Detecting changed packages..."
+          
+          # Get changed files in the last commit
+          $changedFiles = git diff --name-only HEAD~1 HEAD
+          Write-Host "Changed files:"
+          $changedFiles | ForEach-Object { Write-Host "  $_" }
+          
+          # Find packages with changes
+          $changedPackages = @()
+          foreach ($file in $changedFiles) {
+            if ($file -match '^packages/([^/]+)/') {
+              $packageName = $matches[1]
+              if ($changedPackages -notcontains $packageName) {
+                $changedPackages += $packageName
+              }
+            }
+          }
+          
+          if ($changedPackages.Count -gt 0) {
+            Write-Host "Changed packages detected:"
+            $changedPackages | ForEach-Object { Write-Host "  $_" }
+            $packagesJson = ($changedPackages | ConvertTo-Json -Compress)
+            echo "has-changes=true" >> $env:GITHUB_OUTPUT
+            echo "packages=$packagesJson" >> $env:GITHUB_OUTPUT
+          } else {
+            Write-Host "No package changes detected"
+            echo "has-changes=false" >> $env:GITHUB_OUTPUT
+          }
+
+      - name: Build and publish packages
+        if: steps.detect-changes.outputs.has-changes == 'true'
+        shell: powershell
+        env:
+          CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
+        run: |
+          Write-Host "Building and publishing packages..."
+          
+          if (-not $env:CHOCOLATEY_API_KEY) {
+            Write-Error "CHOCOLATEY_API_KEY secret is not configured. Please add your Chocolatey API key as a repository secret."
+            exit 1
+          }
+          
+          # Parse the packages JSON
+          $packages = '${{ steps.detect-changes.outputs.packages }}' | ConvertFrom-Json
+          
+          foreach ($packageName in $packages) {
+            $packagePath = "packages/$packageName"
+            Write-Host "Processing package: $packageName"
+            
+            if (Test-Path "$packagePath/*.nuspec") {
+              Write-Host "Building package $packageName..."
+              
+              # Change to package directory
+              Push-Location $packagePath
+              
+              try {
+                # Pack the package
+                choco pack --confirm
+                
+                # Find the generated .nupkg file
+                $nupkgFile = Get-ChildItem -Name "*.nupkg" | Select-Object -First 1
+                
+                if ($nupkgFile) {
+                  Write-Host "Generated package: $nupkgFile"
+                  
+                  # Push to chocolatey.org
+                  Write-Host "Publishing $nupkgFile to chocolatey.org..."
+                  choco push $nupkgFile --source https://push.chocolatey.org/ --api-key $env:CHOCOLATEY_API_KEY --confirm
+                  
+                  Write-Host "✅ Successfully published $packageName"
+                  
+                  # Clean up the .nupkg file
+                  Remove-Item $nupkgFile -Force
+                } else {
+                  Write-Warning "No .nupkg file found for $packageName"
+                }
+              }
+              catch {
+                Write-Error "Failed to build or publish package $packageName : $($_.Exception.Message)"
+                throw
+              }
+              finally {
+                Pop-Location
+              }
+            } else {
+              Write-Warning "No .nuspec file found for package $packageName"
+            }
+          }
+
+      - name: Summary
+        shell: powershell
+        run: |
+          if ("${{ steps.detect-changes.outputs.has-changes }}" -eq "true") {
+            Write-Host "✅ Package(s) built and published to chocolatey.org"
+          } else {
+            Write-Host "ℹ️ No package changes detected - nothing to publish"
+          }
