@@ -1,0 +1,109 @@
+---
+name: Update Joplin Package
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC to check for new Joplin releases
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    # Allow manual triggering of the workflow
+
+jobs:
+  update-joplin:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup PowerShell modules
+        shell: powershell
+        run: |
+          # Install AU (Automatic Updater) module for Chocolatey packages
+          Write-Host "Installing AU module..."
+          Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+          Install-Module -Name AU -Force -Scope CurrentUser
+
+          # Import the module
+          Import-Module AU
+          Write-Host "AU module installed and imported successfully"
+          
+          # Show AU version for debugging
+          Get-Module AU | Format-List Name, Version
+
+      - name: Update Joplin package
+        shell: powershell
+        working-directory: packages/joplin
+        run: |
+          Write-Host "Starting Joplin package update check..."
+
+          # Set error action preference
+          $ErrorActionPreference = 'Stop'
+
+          try {
+            # Run the update script
+            .\update.ps1
+
+            Write-Host "Update check completed successfully"
+          }
+          catch {
+            Write-Host "Error during update: $($_.Exception.Message)"
+            throw
+          }
+
+      - name: Check for changes
+        id: check-changes
+        shell: powershell
+        run: |
+          # Check if there are any changes to commit
+          $changes = git status --porcelain
+          if ($changes) {
+            Write-Host "Changes detected:"
+            Write-Host $changes
+            echo "has-changes=true" >> $env:GITHUB_OUTPUT
+          } else {
+            Write-Host "No changes detected"
+            echo "has-changes=false" >> $env:GITHUB_OUTPUT
+          }
+
+      - name: Configure git
+        if: steps.check-changes.outputs.has-changes == 'true'
+        shell: powershell
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.has-changes == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update Joplin package to latest version"
+          title: "🤖 Auto-update: Joplin package"
+          body: |
+            This PR was automatically created by the update workflow.
+
+            ## Changes
+            - Updated Joplin package to the latest version available
+            - Updated version, checksum, and URLs in package files
+            - Updated verification file with new download information
+
+            ## Files Changed
+            - `packages/joplin/tools/chocolateyinstall.ps1`
+            - `packages/joplin/legal/VERIFICATION.txt`
+            - `packages/joplin/joplin.nuspec` (if version changed)
+
+            Please review the changes before merging.
+          branch: auto-update-joplin
+          delete-branch: true
+
+      - name: Summary
+        shell: powershell
+        run: |
+          if ("${{ steps.check-changes.outputs.has-changes }}" -eq "true") {
+            Write-Host "✅ Update found and PR created"
+          } else {
+            Write-Host "ℹ️ No updates available - Joplin package is up to date"
+          }
