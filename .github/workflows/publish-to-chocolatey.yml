@@ -105,7 +105,7 @@ jobs:
                   Write-Host "Publishing $nupkgFile to chocolatey.org..."
                   choco push $nupkgFile --source https://push.chocolatey.org/ --api-key $env:CHOCOLATEY_API_KEY --confirm
                   
-                  Write-Host "✅ Successfully published $packageName"
+                  Write-Host "Successfully published $packageName"
                   
                   # Clean up the .nupkg file
                   Remove-Item $nupkgFile -Force
@@ -129,7 +129,7 @@ jobs:
         shell: powershell
         run: |
           if ("${{ steps.detect-changes.outputs.has-changes }}" -eq "true") {
-            Write-Host "✅ Package(s) built and published to chocolatey.org"
+            Write-Host "Package(s) built and published to chocolatey.org"
           } else {
-            Write-Host "ℹ️ No package changes detected - nothing to publish"
+            Write-Host "No package changes detected - nothing to publish"
           }
