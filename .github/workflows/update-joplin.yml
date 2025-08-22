@@ -103,7 +103,7 @@ jobs:
         shell: powershell
         run: |
           if ("${{ steps.check-changes.outputs.has-changes }}" -eq "true") {
-            Write-Host "✅ Update found and PR created"
+            Write-Host "Update found and PR created"
           } else {
-            Write-Host "ℹ️ No updates available - Joplin package is up to date"
+            Write-Host "No updates available - Joplin package is up to date"
           }
