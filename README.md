@@ -14,3 +14,5 @@ See [docs/JOPLIN_AUTOMATION.md](docs/JOPLIN_AUTOMATION.md) for automation detail
 ## Publishing Setup
 
 To enable automatic publishing to chocolatey.org, see [docs/CHOCOLATEY_PUBLISHING_SETUP.md](docs/CHOCOLATEY_PUBLISHING_SETUP.md) for detailed setup instructions including how to securely configure the required API key.
+
+**This repository will be archived soon, please take a look into the more intensively maintained repository afischer211/my-chocolatey.**
